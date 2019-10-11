@@ -9,9 +9,18 @@ using namespace std;
 
 class Parser{
 
+    public:
+
+    private:
+    Lexer lex;
+
+
 };
 
 //hard-code the logic for the basic language
+//recommended to use predictive parsing (pseudocode is in the slides? not sure)
+
+
 /*
 
 For our reference:
