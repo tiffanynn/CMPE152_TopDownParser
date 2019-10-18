@@ -1,0 +1,10 @@
+{
+ bool a;
+ {
+ float a;
+a = 1.6; // This is fine
+ }
+ {
+ a = 1.6; // This should result in a type error
+ }
+}
