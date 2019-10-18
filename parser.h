@@ -10,12 +10,36 @@ using namespace std;
 class Parser{
 
     public:
+    Parser(Lexer something);
+    string token_id(Token t);
 
     private:
     Lexer lex;
 
 
 };
+
+
+Parser::Parser(Lexer something){
+    lex = something;
+}
+
+
+string Parser::token_id(Token t){
+    string temp = "";
+    if(t.token_value == "ID" || t.token_value == "NUM"){
+        temp = "Token" + t.lexerme;
+    }
+    return temp;
+}
+
+
+
+
+
+
+
+
 
 //hard-code the logic for the basic language
 //recommended to use predictive parsing (pseudocode is in the slides? not sure)
