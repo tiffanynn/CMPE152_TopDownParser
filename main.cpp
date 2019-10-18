@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "tree.h"
 using namespace std;
 
 int main()
@@ -8,5 +9,8 @@ int main()
 	// lex.getNextToken();
     // lex.print();
     
+    cout << "Parse tree:" << endl;
+
+
     return 0;
 }
