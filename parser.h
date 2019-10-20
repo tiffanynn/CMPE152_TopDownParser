@@ -10,21 +10,52 @@ using namespace std;
 class Parser{
 
     public:
+    Parser();
     Parser(Lexer something);
-    string token_id(Token t);
+    string token_id(Token t); //psuedocode of what i thought of doing for parsing
+    void parsing();
+
 
     private:
     Lexer lex;
-
+    vector<string> tree_contents;
 
 };
 
+Parser::Parser(){
+}
 
 Parser::Parser(Lexer something){
     lex = something;
 }
 
 
+void Parser::parsing(){
+//thought of parsing through the obtained tokens from the lexer
+//creating new string vector to store in stuff for the parse tree
+for(int i = 0; i < lex.obtained_tokens.size(); i++){
+    if(lex.obtained_tokens[i].lexerme == '{'){
+        tree_contents.push_back("PROGRAM");
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+}
+
+
+
+
+//related to variable values
 string Parser::token_id(Token t){
     string temp = "";
     if(t.token_value == "ID" || t.token_value == "NUM"){
