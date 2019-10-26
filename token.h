@@ -1,23 +1,37 @@
+#pragma once
 #include <iostream>
-#include <cstdlib>
+#include "Tag.h"
+#include <sstream>
 #include <string>
-#include <fstream>
 using namespace std;
-
-class Token {
-    public:
-    Token();
-    Token(string input, string attributes);
-    string lexerme;
-    string token_value; 
-
+class Token
+{
+public:
+	Tag t; //this field is used purely to access the values in tag.
+	Token();
+	Token(int);
+	int tag;
+	virtual string toString();
 };
-
-Token::Token(){
-    lexerme = "";
-    token_value = "";
+Token::Token()
+{
+	tag = t.ERROR;
 }
-Token::Token(string input, string attributes){
-    lexerme = input;
-    token_value = attributes;
-};
+Token::Token(int t)
+{
+	tag = t;
+}
+
+string Token::toString()
+{
+	if (tag == 999)
+	{
+		return "ERROR";
+	}
+	else
+	{
+		stringstream s;
+		s << (char)tag;
+		return s.str(); //for default values like ;
+	}
+}
