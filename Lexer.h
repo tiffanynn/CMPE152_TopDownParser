@@ -31,12 +31,19 @@ void Lexer::readchar(ifstream& in)
 
 bool Lexer::nextchar(ifstream& in, char prev)
 {
-	char temp;
+	/*char temp;
 	in >> noskipws >> temp;
+	cout << "WE IN DIS B, " << temp << endl;
 	if (temp == prev)
 		return true;
 	else 
-		return false;
+		return false;*/
+	readchar(in);
+	if (peek == prev)
+	{
+		return true;
+	}
+	else return false;
 }
 
 
@@ -48,6 +55,7 @@ Token* Lexer::scan(ifstream& in)
 		else if (peek == '\n')
 		{
 			line += 1;
+			continue;
 		}
 		else break;
 	}
@@ -58,7 +66,6 @@ Token* Lexer::scan(ifstream& in)
 		if (nextchar(in, '&'))
 		{
 			return new Word("&&", tag.AND);
-
 		}
 		break;
 	}
@@ -116,14 +123,41 @@ Token* Lexer::scan(ifstream& in)
 			readchar(in);
 			s << peek;
 		}
-		if (peek != '.')
+		if (peek != '.') //If there's no decimal point, return a num
 		{
 			s >> v;
 			return new Num(v);
 		}
+		float x = (float)v; //If there is, return a real token
+		stringstream f;
+		f << x;
+		f << peek;
+		readchar(in);
+		f << peek;
+		while (isdigit(peek) > 0)
+		{
+			readchar(in);
+			f << peek; 
+		}
+		f >> x;
+		return new Real(x);
 	}
-
-	return new Token(peek);
+	if (isalpha(peek) > 0)
+	{
+		stringstream s;
+		s << peek;
+		while (isalpha(peek) > 0)
+		{
+			readchar(in);
+			s << peek;
+		}
+		cout << s.str() << endl;
+		return new Word(s.str(), tag.ID);
+	}
+	char c = peek;
+	peek = ' ';
+	return new Token(c);
+	
 
 
 
