@@ -1,7 +1,7 @@
 #pragma once
-#include "num.h"
-#include "real.h"
-#include "word.h"
+#include "Num.h"
+#include "Real.h"
+#include "Word.h"
 #include <unordered_map>
 #include <fstream>
 
@@ -15,7 +15,7 @@ public:
 	Tag tag;
 	void readchar(ifstream& in);
 	bool nextchar(ifstream& in, char);
-	Token scan(ifstream& in);
+	Token* scan(ifstream& in);
 };
 Lexer::Lexer()
 {
@@ -40,7 +40,7 @@ bool Lexer::nextchar(ifstream& in, char prev)
 }
 
 
-Token Lexer::scan(ifstream& in)
+Token* Lexer::scan(ifstream& in)
 {
 	for (;; readchar(in))
 	{
@@ -57,8 +57,8 @@ Token Lexer::scan(ifstream& in)
 	{
 		if (nextchar(in, '&'))
 		{
-			Word w("&&", tag.AND);
-			return w;
+			return new Word("&&", tag.AND);
+
 		}
 		break;
 	}
@@ -66,8 +66,7 @@ Token Lexer::scan(ifstream& in)
 	{
 		if (nextchar(in, '|'))
 		{
-			Word w("||", tag.OR);
-			return w;
+			return new Word("||", tag.OR);
 		}
 		break;
 	}
@@ -75,8 +74,7 @@ Token Lexer::scan(ifstream& in)
 	{
 		if (nextchar(in, '='))
 		{
-			Word w("==", tag.EQ);
-			return w;
+			return new Word("==", tag.EQ);
 		}
 		break;
 	}
@@ -84,8 +82,7 @@ Token Lexer::scan(ifstream& in)
 	{
 		if (nextchar(in, '='))
 		{
-			Word w("!=", tag.NE);
-			return w;
+			return new Word("!=", tag.NE);
 		}
 		break;
 	}
@@ -93,8 +90,7 @@ Token Lexer::scan(ifstream& in)
 	{
 		if (nextchar(in, '='))
 		{
-			Word w("<=", tag.LE);
-			return w;
+			return new Word("<=", tag.LE);
 		}
 		break;
 	}
@@ -103,7 +99,7 @@ Token Lexer::scan(ifstream& in)
 		if (nextchar(in, '='))
 		{
 			Word w(">=", tag.GE);
-			return w;
+			return new Word(">=", tag.GE);
 		}
 		break;
 	}
@@ -123,16 +119,11 @@ Token Lexer::scan(ifstream& in)
 		if (peek != '.')
 		{
 			s >> v;
-			Num n(v);
-			return n;
+			return new Num(v);
 		}
 	}
-	Token t(peek);
 
-
-	return t;
-
-
+	return new Token(peek);
 
 
 
