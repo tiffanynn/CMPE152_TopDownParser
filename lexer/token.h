@@ -12,6 +12,7 @@ public:
 	Token(int);
 	int tag;
 	virtual string toString();
+	void operator= (Token const &t2);
 };
 Token::Token()
 {
@@ -34,4 +35,9 @@ string Token::toString()
 		s << (char)tag;
 		return s.str(); //for default values like ;
 	}
+}
+
+void Token::operator=(Token const &t2){
+	tag= t2.tag;
+	
 }
