@@ -15,7 +15,7 @@ public:
 };
 Token::Token()
 {
-	tag = t.ERROR;
+	tag = t.ERROR; // the default constructor should never be called
 }
 Token::Token(int t)
 {

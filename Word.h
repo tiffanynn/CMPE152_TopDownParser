@@ -19,8 +19,9 @@ Word::Word()
 }
 Word::Word(string s, int te)
 {
-	this->tag = t.ID;
+	this->tag = te;
 	lexeme = s;
+
 }
 
 string Word::toString()

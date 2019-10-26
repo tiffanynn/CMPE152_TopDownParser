@@ -11,7 +11,7 @@ public:
 	Real(float v);
 	string toString();
 };
-Real::Real()
+Real::Real() //default consructor should never be called
 {
 	this->tag = t.ERROR;
 	value = t.ERROR;

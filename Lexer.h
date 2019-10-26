@@ -10,40 +10,65 @@ class Lexer
 public:
 	Lexer();
 	char peek;
-	unordered_map<string, Word> words; // keeps track of variables, maps the string (variable name) to word(token version of variable name)
+	unordered_map<string, Word*> words; // keeps track of variables, maps the string (variable name) to word(token version of variable name)
 	int line;
 	Tag tag;
 	void readchar(ifstream& in);
 	bool nextchar(ifstream& in, char);
 	Token* scan(ifstream& in);
+	void reserve(Word*);
+	bool check_char(char);
+
 };
 Lexer::Lexer()
 {
 	peek = ' ';
 	line = 1;
-}
+	reserve(new Word("if", tag.IF));
+	reserve(new Word("else", tag.ELSE));
+	reserve(new Word("do", tag.DO));
+	reserve(new Word("break", tag.BREAK));
+	reserve(new Word("true", tag.TRUE));
+	reserve(new Word("false", tag.FALSE));
+	reserve(new Word("while", tag.WHILE));
+	reserve(new Word("int", tag.INT));
+	reserve(new Word("bool", tag.BOOL));
+	reserve(new Word("#", tag.MYEOF));
 
+
+
+}
+bool Lexer::check_char(char c)
+{
+	if (c == ' ' || c == '(' || c == ' ' || c == '+' || c == '=' || c == '-' ||
+		c == ')' || c == '\t' || c == '\n' || c == '}' || c== '/'
+		)
+		return true;
+	else return false;
+}
+void Lexer::reserve(Word *w)
+{
+	words[w->lexeme] = w;
+	//cout << "Word " << w->lexeme << " reserved with tag: " << w->tag << endl;
+}
 void Lexer::readchar(ifstream& in)
 {
 	in >> noskipws >>peek;
-	//cout << peek << endl;
 }
 
 bool Lexer::nextchar(ifstream& in, char prev)
 {
-	/*char temp;
-	in >> noskipws >> temp;
-	cout << "WE IN DIS B, " << temp << endl;
-	if (temp == prev)
-		return true;
-	else 
-		return false;*/
 	readchar(in);
 	if (peek == prev)
 	{
+		peek = ' ';
 		return true;
 	}
-	else return false;
+	else
+	{
+		peek = ' ';
+		return false;
+	}
 }
 
 
@@ -55,7 +80,7 @@ Token* Lexer::scan(ifstream& in)
 		else if (peek == '\n')
 		{
 			line += 1;
-			continue;
+			//continue;
 		}
 		else break;
 	}
@@ -67,6 +92,7 @@ Token* Lexer::scan(ifstream& in)
 		{
 			return new Word("&&", tag.AND);
 		}
+		else return new Token('&');
 		break;
 	}
 	case '|': 
@@ -75,6 +101,7 @@ Token* Lexer::scan(ifstream& in)
 		{
 			return new Word("||", tag.OR);
 		}
+		else return new Token('|');
 		break;
 	}
 	case '=':
@@ -83,6 +110,7 @@ Token* Lexer::scan(ifstream& in)
 		{
 			return new Word("==", tag.EQ);
 		}
+		else return new Token('=');
 		break;
 	}
 	case '!':
@@ -91,6 +119,7 @@ Token* Lexer::scan(ifstream& in)
 		{
 			return new Word("!=", tag.NE);
 		}
+		else return new Token('!');
 		break;
 	}
 	case '<':
@@ -99,6 +128,7 @@ Token* Lexer::scan(ifstream& in)
 		{
 			return new Word("<=", tag.LE);
 		}
+		else return new Token('<');
 		break;
 	}
 	case '>':
@@ -108,6 +138,7 @@ Token* Lexer::scan(ifstream& in)
 			Word w(">=", tag.GE);
 			return new Word(">=", tag.GE);
 		}
+		else return new Token('>');
 		break;
 	}
 	default:
@@ -149,10 +180,17 @@ Token* Lexer::scan(ifstream& in)
 		while (isalpha(peek) > 0)
 		{
 			readchar(in);
+			if (check_char(peek)) break;
 			s << peek;
 		}
-		cout << s.str() << endl;
-		return new Word(s.str(), tag.ID);
+		Word* w = words[s.str()]; // This will check if the word is in the reserved keywords like while, do, break, etc
+		if (w != NULL)
+		{
+			return w;
+		}
+		Word* varname = new Word(s.str(), tag.ID);
+		words[s.str()] = varname; //if it's not a keyword, it's a variable. add the hash table using variable name, s.str(), to word with appropriate tag.
+		return varname;
 	}
 	char c = peek;
 	peek = ' ';
