@@ -3,6 +3,7 @@
 #include "Real.h"
 #include "Word.h"
 #include <unordered_map>
+#include <stack>
 #include <fstream>
 
 class Lexer
@@ -13,11 +14,13 @@ public:
 	unordered_map<string, Word*> words; // keeps track of variables, maps the string (variable name) to word(token version of variable name)
 	int line;
 	Tag tag;
-	void readchar(ifstream& in);
-	bool nextchar(ifstream& in, char);
-	Token* scan(ifstream& in);
+	void readchar(ifstream&);
+	bool nextchar(ifstream&, char);
+	Token* scan(ifstream&);
+	Word *last_word;
 	void reserve(Word*);
 	bool check_char(char);
+	bool check_acceptable_words(string);
 
 };
 Lexer::Lexer()
@@ -32,16 +35,22 @@ Lexer::Lexer()
 	reserve(new Word("false", tag.FALSE));
 	reserve(new Word("while", tag.WHILE));
 	reserve(new Word("int", tag.INT));
+	reserve(new Word("float", tag.FLOAT));
 	reserve(new Word("bool", tag.BOOL));
 	reserve(new Word("#", tag.MYEOF));
 
 
-
 }
-bool Lexer::check_char(char c)
+bool Lexer::check_acceptable_words(string s)
+{
+	if (s == "while" || s == "if" || s == "do" || s == "else" || s == "int" || s == "bool" || s == "float" ) //
+		return true;
+	else return false;
+}
+bool Lexer::check_char(char c) //helper function to not have scan() do crazy stuff when peek is looking at a terminal
 {
 	if (c == ' ' || c == '(' || c == ' ' || c == '+' || c == '=' || c == '-' ||
-		c == ')' || c == '\t' || c == '\n' || c == '}' || c== '/'
+		c == ')' || c == '\t' || c == '\n' || c == '}' || c== '/' || c == ';'
 		)
 		return true;
 	else return false;
@@ -72,11 +81,12 @@ bool Lexer::nextchar(ifstream& in, char prev)
 }
 
 
-Token* Lexer::scan(ifstream& in)
+Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lexer processing logic is here.
 {
+
 	for (;; readchar(in))
 	{
-		if (peek == ' ' || peek == '\t') continue;
+		if (peek == ' ' || peek == '\t') continue; 
 		else if (peek == '\n')
 		{
 			line += 1;
@@ -88,7 +98,7 @@ Token* Lexer::scan(ifstream& in)
 	{
 	case '&':
 	{
-		if (nextchar(in, '&'))
+		if (nextchar(in, '&')) //if the next character is the same as peek, then return the correct correct tag
 		{
 			return new Word("&&", tag.AND);
 		}
@@ -154,45 +164,57 @@ Token* Lexer::scan(ifstream& in)
 			readchar(in);
 			s << peek;
 		}
-		if (peek != '.') //If there's no decimal point, return a num
+		if (peek != '.') //If there's no decimal point, return a Num
 		{
 			s >> v;
 			return new Num(v);
 		}
-		float x = (float)v; //If there is, return a real token
+		float x = (float)v; //If there is, return a Real
 		stringstream f;
 		f << x;
 		f << peek;
 		readchar(in);
-		f << peek;
-		while (isdigit(peek) > 0)
+		f << peek; //get the decimal point
+		while (isdigit(peek) > 0) //get the last fraction
 		{
 			readchar(in);
 			f << peek; 
 		}
 		f >> x;
-		return new Real(x);
+		return new Real(x); //return Real aka floats
 	}
-	if (isalpha(peek) > 0)
+	if (isalpha(peek) > 0) //handle alphabetic characters
 	{
 		stringstream s;
 		s << peek;
-		while (isalpha(peek) > 0)
+		while (isalpha(peek) > 0) //read the next character and check peek
 		{
 			readchar(in);
-			if (check_char(peek)) break;
+			if (check_char(peek)) break; //if peek is looking at a terminal or weird symbol, break out of the loop and don't append it to the string.
 			s << peek;
 		}
 		Word* w = words[s.str()]; // This will check if the word is in the reserved keywords like while, do, break, etc
 		if (w != NULL)
 		{
+			last_word = w;
+			cout << "lastword set to: " << last_word->lexeme << endl;
 			return w;
 		}
+		//if(last_word->lexeme != )
+		if (!check_acceptable_words(last_word->lexeme))
+			return new Word; //this should have the error information
 		Word* varname = new Word(s.str(), tag.ID);
 		words[s.str()] = varname; //if it's not a keyword, it's a variable. add the hash table using variable name, s.str(), to word with appropriate tag.
+		last_word = varname;
+		cout << "lastword set to: " << last_word->lexeme << endl;
 		return varname;
 	}
 	char c = peek;
+	if (c == '#')
+	{
+		peek = ' ';
+		return words["#"]; //return reserved eof token
+	}
 	peek = ' ';
 	return new Token(c);
 	
