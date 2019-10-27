@@ -5,7 +5,7 @@ using namespace std;
 class Tag //class is used to access information about tags
 {
 public:
-	const int AND = 256, BASIC = 257, BREAK = 258, DO = 259, ELSE = 260, EQ = 261, FALSE = 262, GE = 263,
+	const int AND = 256, BREAK = 258, DO = 259, ELSE = 260, EQ = 261, FALSE = 262, GE = 263,
 		ID = 264, IF = 265, INDEX = 266, LE = 267, MINUS = 268, NE = 269, NUM = 270, OR = 271, REAL = 272,
 		TEMP = 273, TRUE = 274, WHILE = 275, INT = 276, FLOAT = 277, BOOL = 278, MYEOF = 420, ERROR = 999;
 	unordered_map<int, string> printmap; //used for printing, access the symbol name by its tag, which is defined above.
@@ -15,7 +15,6 @@ public:
 Tag::Tag()
 {
 	printmap[256] = "AND";
-	printmap[257] = "BASIC";
 	printmap[258] = "BEAK";
 	printmap[259] = "DO";
 	printmap[260] = "ELSE";
