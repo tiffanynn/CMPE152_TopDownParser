@@ -1,7 +1,7 @@
 #pragma once
-#include "Num.h"
-#include "Real.h"
-#include "Word.h"
+#include "num.h"
+#include "real.h"
+#include "word.h"
 #include <unordered_map>
 #include <stack>
 #include <fstream>
@@ -164,12 +164,12 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 			readchar(in);
 			s << peek;
 		}
-		if (peek != '.') //If there's no decimal point, return a Num, If there is, return a Real
+		if (peek != '.') //If there's no decimal point, return a Num
 		{
 			s >> v;
 			return new Num(v);
 		}
-		float x = (float)v; 
+		float x = (float)v; //If there is, return a Real
 		stringstream f;
 		f << x;
 		f << peek;
@@ -180,7 +180,7 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 			readchar(in);
 			f << peek; 
 		}
-		f >>x;
+		f >> x;
 		return new Real(x); //return Real aka floats
 	}
 	if (isalpha(peek) > 0) //handle alphabetic characters
@@ -197,6 +197,7 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 		if (w != NULL)
 		{
 			last_word = w;
+			cout << "lastword set to: " << last_word->lexeme << endl;
 			return w;
 		}
 		//if(last_word->lexeme != )
@@ -205,6 +206,7 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 		Word* varname = new Word(s.str(), tag.ID);
 		words[s.str()] = varname; //if it's not a keyword, it's a variable. add the hash table using variable name, s.str(), to word with appropriate tag.
 		last_word = varname;
+		cout << "lastword set to: " << last_word->lexeme << endl;
 		return varname;
 	}
 	char c = peek;
@@ -216,5 +218,8 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 	peek = ' ';
 	return new Token(c);
 	
+
+
+
 
 }
