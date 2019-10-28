@@ -1,5 +1,5 @@
 #include "logic.h"
-class And: public Logic{
+class And: public Logical{
     public:
     Token something;
     Expr p1, p2;
