@@ -1,22 +1,32 @@
+#pragma once
 #include "node.h"
+#include "../lexer/lexer.h"
 #include "../symbols/type.h"
 using namespace std;
 
-class Expr: public Node{
-    public:
-    Token op;
-    Type type;
-    Expr(){}
-    Expr(Token tok, Type p);
-    string getNodeStr();
+class Expr :public Node
+{
+public:
+	Token *tok;
+	Type* type;
+	Expr();
+	Expr(Token*, Type*);
+	string getNodeStr();
 };
-
-
-Expr::Expr(Token tok, Type p){
-    op = tok;
-    type = p;
+Expr::Expr()
+{
+	tok = new Word();
+	type = NULL;
+}
+Expr::Expr(Token *t, Type* typ)
+{
+	tok = t;
+	type = typ;
 }
 
-string Expr::getNodeStr(){
-    return "Token" + op.toString();
+string Expr::getNodeStr()
+{
+	string s;
+	s = "Token " + tok->toString();
+	return s;
 }

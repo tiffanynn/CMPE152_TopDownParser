@@ -1,28 +1,29 @@
-#include "expr.h"
+#pragma once
+#include "../lexer/token.h"
 #include "../symbols/type.h"
-using namespace std;
+#include "expr.h"
 
-class Logic:public Expr{
- public:
- Expr expr1, expr2;
- Logic(){}
- Logic(Token tok, Expr x1, Expr x2);
- Type check(Type p1, Type p2);
- void operator=(Expr const &e1);
+class Logical :public Expr
+{
+public:
+	Expr* expr1, *expr2;
+	Logical(Token* tp, Expr* e1, Expr* e2);
+	Type* check(Type*, Type*);
 };
 
-
-void Logic::operator=(Expr const &e1){
-    
+Logical::Logical(Token* tp, Expr* e1, Expr* e2)
+{
+	this->tok = tp;
+	this->type = NULL;
+	expr1 = e1;
+	expr2 = e2;
 }
-Logic::Logic(Token tok, Expr x1, Expr x2){
-    this->tok = NULL;
-    expr1 = x1;
-    expr2 = x2;
-   Type type = check(expr1.type, expr2.type); 
-    if(type = NULL){
-        cout << "Type error" << endl;
-    }
-    children.push_back(expr1); //couldn't identify "children" vector
-    children.push_back(expr2);
+
+Type* Logical::check(Type* t1, Type* t2)
+{
+	if (t1 == t1->get_Bool() && t2 == t2->get_Bool())
+	{
+		return t1->get_Bool();
+	}
+	else return NULL;
 }
