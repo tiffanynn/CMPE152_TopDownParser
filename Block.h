@@ -4,15 +4,15 @@
 class Block : public Stmt
 {
 public:
-	Stmt stmt;
-	Block(Stmt s);
+	Stmt *stmt;
+	Block(Stmt* s);
 	string getNodeStr();
 };
 
-Block::Block(Stmt s)
+Block::Block(Stmt *s)
 {
 	stmt = s;
-	children.push_back(stmt);
+	this->children.push_back(stmt);
 }
 
 string Block::getNodeStr()
