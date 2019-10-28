@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class Rel:public Logic{
+class Rel: public Logical {
     public:
     Rel(){}
     Rel(Token tok, Expr x1, Expr x2);
