@@ -1,5 +1,7 @@
 {
-int r; int dd; int a; int d;
-r = a; dd = d;
-while( dd <= r ) dd = 2*dd;
+int b; b = 1;
+{
+int a; a = 2;
+do a = a+1; while(a < 100);
+}
 }

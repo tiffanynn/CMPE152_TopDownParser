@@ -32,3 +32,4 @@ string Num::toString() //need to call virtual fu nction correctly
 	s << value;
 	return lexeme;
 }
+
