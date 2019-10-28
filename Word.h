@@ -9,6 +9,15 @@ public:
 	string lexeme;
 	Word();
 	Word(string, int);
+	static Word* get_True()
+	{
+		static Word* True = new Word("true", 274);
+		return True;
+	}
+	static Word* get_False()
+	{
+		static Word* False = new Word("false", 262);
+	}
 	string toString();
 };
 

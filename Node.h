@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-using namespace std;
 class Node //important class
 {
 public:
@@ -9,13 +8,17 @@ public:
 	vector<Node*> children;
 	vector<Node*> getChildren();
 	virtual string getNodeStr();
-
+	void error(string);
 };
 Node::Node()
 {
 	line = 0;
 }
 
+void Node::error(string s)
+{
+	cout << "Error: " << s << endl;
+}
 
 vector<Node*> Node::getChildren()
 {

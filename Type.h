@@ -33,14 +33,18 @@ public:
 
 	bool isitnumeric(Type*);
 	Type* max(Type*, Type*);
-	bool reserved;
 };
+Type::Type()
+{
+	this->lexeme = "ERROR";
+	this->tag = 999;
+	width = 0;
+}
 Type::Type(string s, int tag, int w)
 {
 	this->lexeme = s;
 	this->tag = tag;
-	reserved = false;
-	//Int = new Type("int", 278, 4);
+
 	width = w;
 }
 
@@ -48,8 +52,6 @@ Type::Type(string s, int tag, int w)
 
 bool Type::isitnumeric(Type* p)
 {
-	//if(!reserved)
-		//reserve_default_types();
 	if (p == get_Char() || p == get_Int() || p == get_Float())
 		return true;
 	else 

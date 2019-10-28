@@ -58,7 +58,6 @@ bool Lexer::check_char(char c) //helper function to not have scan() do crazy stu
 void Lexer::reserve(Word *w)
 {
 	words[w->lexeme] = w;
-	//cout << "Word " << w->lexeme << " reserved with tag: " << w->tag << endl;
 }
 void Lexer::readchar(ifstream& in)
 {

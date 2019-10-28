@@ -1,6 +1,4 @@
 #pragma once
-#include "Word.h"
-#include "Type.h"
 #include "Expr.h"
 
 

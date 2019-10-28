@@ -7,10 +7,17 @@ class Logical :public Expr
 {
 public:
 	Expr* expr1, *expr2;
+	Logical();
 	Logical(Token* tp, Expr* e1, Expr* e2);
 	Type* check(Type*, Type*);
 };
-
+Logical::Logical()
+{
+	this->tok = new Word();
+	this->type = NULL;
+	expr1 = NULL;
+	expr2 = NULL;
+}
 Logical::Logical(Token* tp, Expr* e1, Expr* e2)
 {
 	this->tok = tp;

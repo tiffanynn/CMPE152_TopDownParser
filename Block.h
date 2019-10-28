@@ -5,10 +5,14 @@ class Block : public Stmt
 {
 public:
 	Stmt *stmt;
+	Block();
 	Block(Stmt* s);
 	string getNodeStr();
 };
-
+Block::Block()
+{
+	stmt = NULL;
+}
 Block::Block(Stmt *s)
 {
 	stmt = s;

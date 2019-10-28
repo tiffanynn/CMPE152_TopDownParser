@@ -1,5 +1,4 @@
 #pragma once
-#include "Lexer.h"
 #include "Type.h"
 #include "Node.h"
 
@@ -11,6 +10,7 @@ public:
 	Expr();
 	Expr(Token*, Type*);
 	string getNodeStr();
+	void error(string s);
 };
 Expr::Expr()
 {
@@ -28,4 +28,8 @@ string Expr::getNodeStr()
 	string s;
 	s = "Token " + tok->toString();
 	return s;
+}
+void Expr::error(string s)
+{
+	cout << "Error: " << s << endl;
 }
