@@ -1,7 +1,6 @@
 #pragma once
-#include "Logic.h"
+#include "Logical.h"
 #include "Expr.h"
-
 class Or :public Logical
 {
 public:

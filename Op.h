@@ -1,7 +1,7 @@
 #pragma once
-#include "expr.h"
-#include "../lexer/token.h"
-#include "../symbols/type.h"
+#include "Expr.h"
+#include "Token.h"
+#include "Type.h"
 
 class Op :public Expr
 {

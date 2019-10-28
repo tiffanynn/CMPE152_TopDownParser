@@ -1,7 +1,7 @@
 #pragma once
-#include "../lexer/num.h"
-#include "../symbols/type.h"
-#include "expr.h"
+#include "Num.h"
+#include "Type.h"
+#include "Expr.h"
 
 class Constant :public Expr
 {
@@ -37,3 +37,4 @@ string Constant::getNodeStr()
 {
 	return ("Token " + tok->toString());
 }
+

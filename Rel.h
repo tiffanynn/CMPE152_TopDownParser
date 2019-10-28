@@ -1,5 +1,5 @@
 #pragma once
-#include "Logic.h"
+#include "Logical.h"
 
 
 class Rel : public Logical

@@ -1,8 +1,6 @@
 #pragma once
-#include "node.h"
-#include "../lexer/lexer.h"
-#include "../symbols/type.h"
-using namespace std;
+#include "Type.h"
+#include "Node.h"
 
 class Expr :public Node
 {
@@ -12,6 +10,7 @@ public:
 	Expr();
 	Expr(Token*, Type*);
 	string getNodeStr();
+	void error(string s);
 };
 Expr::Expr()
 {
@@ -29,4 +28,8 @@ string Expr::getNodeStr()
 	string s;
 	s = "Token " + tok->toString();
 	return s;
+}
+void Expr::error(string s)
+{
+	cout << "Error: " << s << endl;
 }

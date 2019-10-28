@@ -1,6 +1,6 @@
 #pragma once
-#include "../inter/id.h"
-#include "../lexer/token.h"
+#include "Id.h"
+#include "Token.h"
 #include <unordered_map>
 
 class Env

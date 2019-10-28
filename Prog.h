@@ -1,6 +1,6 @@
 #pragma once
-#include "node.h"
-#include "block.h"
+#include "Node.h"
+#include "Block.h"
 class Prog : public Node
 {
 public:

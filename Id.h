@@ -1,7 +1,5 @@
 #pragma once
-#include "../lexer/word.h"
-#include "../symbols/type.h"
-#include "expr.h"
+#include "Expr.h"
 
 
 class Id : public Expr
