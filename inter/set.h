@@ -15,3 +15,8 @@ class Set:public Stmt{
     string getNodeStr();
     Type check(Type p1, Type p2);
 };
+
+string Set::getNodeStr(){
+    return "ASSIGN";
+}
+

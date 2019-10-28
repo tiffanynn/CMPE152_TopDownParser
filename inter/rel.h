@@ -1,23 +1,30 @@
 #pragma once
-#include "logic.h"
-#include "../symbols/type.h"
+#include "Logic.h"
 
-using namespace std;
 
-class Rel: public Logical {
-    public:
-    Rel(){}
-    Rel(Token tok, Expr x1, Expr x2);
-    Type check(Type p1, Type p2);
+class Rel : public Logical
+{
+public:
+	Rel();
+	Rel(Token*, Expr*, Expr*);
+	Type* check(Type*, Type*);
+
 };
+Rel::Rel()
+{
+	this->tok = new Word();
+	this->expr1 = NULL;
+	this->expr2 = NULL;
+}
+Rel::Rel(Token* t, Expr* e1, Expr* e2)
+{
+	this->tok = t;
+	this->expr1 = e1;
+	this->expr2 = e2;
+}
 
-Type Rel::check(Type p1, Type p2){
-    if(p1 == p2){ //needs overloaded operator? idk
-        return this->Type.Bool();
-    }
-    else
-    {
-        return NULL;
-    }
-    return 0;
+Type* Rel::check(Type* t1, Type* t2)
+{
+	if (t1 == t2) return Type::get_Bool();
+	else return NULL;
 }
