@@ -1,22 +1,21 @@
 #pragma once
-#include "stmt.h"
-
-using namespace std;
-
-class Break:public Stmt{
-    public:
-    Stmt s1;
-    Break();
-    string getNodeStr();
+#include "Stmt.h"
+#include <string>
+class Break : public Stmt
+{
+	Stmt* stmt;
+	Break();
+	string getNodeStr();
 };
 
-Break::Break(){
-    if(s1.Enclosing == s1.Null){
-        cout << "unenclosed break";
-    }
-    s1 = s1.Enclosing; //error
+Break::Break()
+{
+	if (Stmt::get_Enclosing() == Stmt::get_Null())
+		error("unenclosed break");
+	stmt = Stmt::get_Enclosing();
 }
 
-string Break::getNodeStr(){
-    return "BREAK";
+string Break::getNodeStr()
+{
+	return "BREAK";
 }

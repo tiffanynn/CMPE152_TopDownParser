@@ -1,37 +1,25 @@
 #pragma once
-#include "../symbols/type.h"
-#include "stmt.h"
-#include "expr.h"
+#include "Stmt.h"
+#include "Expr.h"
+class If :public Stmt
+{
+public:
 
-using namespace std;
-
-class If:public Stmt{
-    public:
-    Expr e1;
-    Stmt s1;
-    If();
-    If(Expr x, Stmt s);
-    string getNodeStr();
+	Expr* expr;
+	Stmt* stmt;
+	If(Expr* e, Stmt* s);
+	string getNodeStr();
 };
 
-If::If(){
-    //do we need to initialize them?
-    expr = NULL;
-    stmt = NULL;
+If::If(Expr* e, Stmt* s)
+{
+	expr = e;
+	stmt = s;
+	children.push_back(e);
+	children.push_back(s);
 }
 
-If::If(Expr x, Stmt s){
-    expr = x;
-    stmt = s;
-    if(expr.type != this->Type.get_Bool()){
-        cout << "Boolean required in while";
-    }
-    else{
-        this->children.push_back(expr);
-        this->children.push_back(stmt);
-    }
-}
-
-string If::getNodeStr(){
-    return "IF";
+string If::getNodeStr()
+{
+	return "IF";
 }
