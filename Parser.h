@@ -20,8 +20,8 @@ public:
 	void match(int t, ifstream&);
 	Prog* program(ifstream& in);
 	Block* block(ifstream&);
-	void decls();
-	Type* type();
+	void decls(ifstream& in);
+	Type* type(ifstream& in);
 	Stmt* stmts();
 	Stmt* stmt();
 	Stmt* assign();
@@ -38,6 +38,7 @@ Parser::Parser(Lexer* l, ifstream& in)
 {
 	lex = l;
 	move(in);
+	used = 0;
 }
 void Parser::error(string s)
 {
@@ -58,7 +59,7 @@ Block* Parser::block(ifstream& in)
 	match('{', in);
 	Env* savedenv = top; //save current scope
 	top = new Env(top);
-	decls();
+	decls(in);
 	Stmt* s = stmts();
 	match('}', in);
 	top = savedenv;
@@ -70,11 +71,24 @@ Prog* Parser::program(ifstream& in)
 {
 	Block* s = block(in);
 	return new Prog(s);
-
 }
 
 void Parser::move(ifstream& in)
 {
 	look = lex->scan(in);
 	cout << look->toString() << endl;
+}
+
+void Parser::decls(ifstream& in)
+{
+	while (look->tag == look->t.BASE_TYPE)
+	{
+		Type* p = type(in);
+		Token* t = look; 
+		match(t->t.ID, in);
+		match(';', in);
+		Id* id = new Id((Word*)t, p, used);
+		top->put(t, id);
+		used +=p->width;
+	}
 }
