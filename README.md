@@ -7,7 +7,7 @@ Assignment #2 for CMPE 152 in C++
 
 
 Instructions on building the parser:
-1. Download our package and unzip it. Save it all in one folder.
+1. Download our package and unzip it. Save it all in one folder. (We apologize for the lack of folder organization compared to the sample code)
 2. For IDE, import everything and have a C++ compiler installed. Then, build it and run it.
 
 
