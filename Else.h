@@ -4,6 +4,7 @@
 
 class Else :public Stmt
 {
+public:
 	Expr* expr;
 	Stmt* stmt1, * stmt2;
 

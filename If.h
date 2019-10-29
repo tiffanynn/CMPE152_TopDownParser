@@ -4,7 +4,6 @@
 class If :public Stmt
 {
 public:
-
 	Expr* expr;
 	Stmt* stmt;
 	If(Expr* e, Stmt* s);

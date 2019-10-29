@@ -2,9 +2,22 @@
 #include "Num.h"
 #include "Real.h"
 #include "Word.h"
+#include "Type.h"
 #include <unordered_map>
 #include <stack>
 #include <fstream>
+
+Word* Word::True = new Word("true", 274);
+Word* Word::False = new Word("false", 262);
+Type* Type::Int = new Type("int", 257, 4);
+Type* Type::Char = new Type("char", 257, 1);
+Type* Type::Bool = new Type("bool", 257, 1);
+Type* Type::Float = new Type("float", 257, 8);
+
+int Tag::AND = 256, Tag::BASE_TYPE = 257, Tag::BREAK = 258, Tag::DO = 259, Tag::ELSE = 260, 
+Tag::EQ = 261, Tag::FALSE = 262, Tag::ID = 264, Tag::IF = 265, Tag::NUM = 270, Tag::OR = 271, 
+Tag::TRUE = 274, Tag::WHILE = 275, Tag::MYEOF = 420, Tag::ERROR = 999, Tag::REAL = 272,
+Tag::INT = 276, Tag::BOOL = 278, Tag::TEMP = 273, Tag::NE = 269, Tag::GE = 263, Tag::LE = 267;
 
 class Lexer
 {
@@ -12,6 +25,7 @@ public:
 	Lexer();
 	char peek;
 	unordered_map<string, Word*> words; // keeps track of variables, maps the string (variable name) to word(token version of variable name)
+	unordered_map<int, Type*> get_type;
 	int line;
 	Tag tag;
 	void readchar(ifstream&);
@@ -27,17 +41,27 @@ Lexer::Lexer()
 {
 	peek = ' ';
 	line = 1;
-	reserve(new Word("if", tag.IF));
-	reserve(new Word("else", tag.ELSE));
-	reserve(new Word("do", tag.DO));
-	reserve(new Word("break", tag.BREAK));
-	reserve(new Word("true", tag.TRUE));
-	reserve(new Word("false", tag.FALSE));
-	reserve(new Word("while", tag.WHILE));
-	reserve(new Word("int", tag.INT));
-	reserve(new Word("float", tag.FLOAT));
-	reserve(new Word("bool", tag.BOOL));
-	reserve(new Word("#", tag.MYEOF));
+	reserve(new Word("if", Tag::IF));
+	reserve(new Word("else", Tag::ELSE));
+	reserve(new Word("do", Tag::DO));
+	reserve(new Word("int", Tag::INT));
+	reserve(new Word("break", Tag::BREAK));
+	reserve(new Word("while", Tag::WHILE));
+	reserve(new Word("#", Tag::MYEOF));
+	reserve(Word::False);
+	reserve(Word::True);
+	reserve(Type::Int);
+	reserve(Type::Float);
+	reserve(Type::Char);
+	reserve(Type::Bool);
+
+	//get_type[270] = Type::BASE_TYPE;
+	//get_type[257] = Type::Int;
+	get_type[276] = Type::Int;
+	get_type[277] = Type::Float;
+	get_type[274] = Type::Bool;
+	get_type[262] = Type::Bool;
+
 
 
 }
@@ -49,7 +73,7 @@ bool Lexer::check_acceptable_words(string s)
 }
 bool Lexer::check_char(char c) //helper function to not have scan() do crazy stuff when peek is looking at a terminal
 {
-	if (c == ' ' || c == '(' || c == ' ' || c == '+' || c == '=' || c == '-' ||
+	if (c == ' ' || c == '+' || c == '=' || c == '-' || c == '(' ||
 		c == ')' || c == '\t' || c == '\n' || c == '}' || c== '/' || c == ';'
 		)
 		return true;
@@ -149,6 +173,10 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 		}
 		else return new Token('>');
 		break;
+	}
+	case '(':
+	{
+		return new Token('(');
 	}
 	default:
 		break;

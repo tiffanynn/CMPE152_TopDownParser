@@ -8,14 +8,15 @@ class Constant :public Expr
 public:
 	Constant(Token*, Type*);
 	Constant(int i);
+	static Constant* True;
+	static Constant* False;
 	static Constant* get_True()
 	{
-		static Constant* True = new Constant(Word::get_True(), Type::get_Bool());
 		return True;
 	}
 	static Constant* get_False()
 	{
-		static Constant* False = new Constant(Word::get_False(), Type::get_Bool());
+		return False;
 	}
 	string getNodeStr();
 

@@ -13,12 +13,12 @@ public:
 };
 Real::Real() //default consructor should never be called
 {
-	this->tag = t.ERROR;
-	value = t.ERROR;
+	this->tag = Tag::ERROR;
+	value = Tag::ERROR;
 }
 Real::Real(float v)
 {
-	this->tag = t.REAL;
+	this->tag = Tag::REAL;
 	value = v;
 }
 

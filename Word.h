@@ -7,16 +7,16 @@ class Word : public Token
 public:
 	Tag t;
 	string lexeme;
+	static Word* True,*False;
 	Word();
 	Word(string, int);
 	static Word* get_True()
 	{
-		static Word* True = new Word("true", 274);
 		return True;
 	}
 	static Word* get_False()
 	{
-		static Word* False = new Word("false", 262);
+		return False;
 	}
 	string toString();
 };
@@ -24,7 +24,7 @@ public:
 Word::Word()
 {
 	lexeme = "ERROR";
-	this->tag = t.ERROR;
+	this->tag = Tag::ERROR;
 }
 Word::Word(string s, int te)
 {

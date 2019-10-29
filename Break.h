@@ -3,6 +3,7 @@
 #include <string>
 class Break : public Stmt
 {
+public:
 	Stmt* stmt;
 	Break();
 	string getNodeStr();

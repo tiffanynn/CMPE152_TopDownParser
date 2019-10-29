@@ -8,26 +8,22 @@ public:
 	Type();
 	Type(string, int, int);
 	Tag t;
-
+	static const Type* tester;
 	//use the get fucntions to acess reserved types
-
+	static Type* Int, * Char, * Bool, * Float;
 	static Type* get_Int() {
-		static Type* Int = new Type("int", 257, 4);
 		return Int;
 	}
 	static Type* get_Char()
 	{
-		static Type *Char = new Type("char", 257, 1);
 		return Char;
 	}
 	static Type* get_Bool()
 	{
-		static Type* Bool = new Type("bool", 257, 1);
 		return Bool;
 	}
 	static Type* get_Float()
 	{
-		static Type* Float = new Type("float", 257, 8);
 		return Float;
 	}
 

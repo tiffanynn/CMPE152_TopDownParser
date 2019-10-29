@@ -5,6 +5,8 @@ class Stmt :public Node
 {
 public:
 	Stmt();
+	static Stmt* Null;
+	static Stmt* Enclosing;
 	static Stmt* get_Null()
 	{
 		static Stmt* Null = new Stmt();
