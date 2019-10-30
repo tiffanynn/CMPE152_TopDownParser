@@ -13,13 +13,13 @@ public:
 };
 Num::Num() //default consructor should never be called
 {
-	this->tag = t.ERROR;
-	value = t.ERROR;
+	this->tag = Tag::ERROR;
+	value = Tag::ERROR;
 	lexeme = "ERROR";
 }
 Num::Num(int v)
 {
-	this->tag = t.NUM;
+	this->tag = Tag::NUM;
 	value = v;
 	stringstream s;
 	s << v;
