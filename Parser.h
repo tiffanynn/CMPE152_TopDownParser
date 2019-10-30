@@ -71,16 +71,12 @@ void Parser::match(int t,ifstream& in)
 {
 	if (look->tag == t)
 	{
-		if (look->tag == Type::Int->tag)
-		{
-			cout << "This is happening correctly look tag:  " << look->tag << endl;
-		}
 		move(in);
 	}
 	else
 	{
 		error("syntax error\n");
-		cout << "error's tag: " << look->tag << endl;
+		cout << "error's tag: " << look->tag  <<", should be: " << t<< endl;
 		cout << "error info: " << look->toString() << endl;
 	}
 }
@@ -91,7 +87,7 @@ Block* Parser::block(ifstream& in)
 	Env* savedenv = top; //save current scope
 	top = new Env(top);
 	decls(in);
-	cout << "After decl()" << endl;
+	cout << "After decls" << endl;
 	Stmt* s = stmts(in);
 	match('}', in);
 	top = savedenv;
@@ -279,6 +275,7 @@ Expr* Parser::expr(ifstream& in)
 {
 	cout << "expr" << endl;
 	Expr* x = term(in);
+	cout << "after term" << endl;
 	while (look->tag == '+' || look->tag == '-')
 	{
 		Token* t = look;
@@ -292,6 +289,7 @@ Expr* Parser::term(ifstream& in)
 {
 	cout << "term" << endl;
 	Expr* x = factor(in);
+	cout << "after factor" << endl;
 	
 	while (look->tag == '*' || look->tag == '/')
 	{
@@ -299,8 +297,8 @@ Expr* Parser::term(ifstream& in)
 		move(in);
 		x = new Arith(t, x, factor(in));
 	}
-	//return x;
-	return new Expr();
+	return x;
+	//return new Expr();
 }
 
 Type* Parser::type(ifstream& in)
@@ -379,7 +377,8 @@ Expr* Parser::factor(ifstream& in)
 	}
 	default:
 	{
-		error("factor syntax error");
+		error("factor syntax error: ");
+		cout << "look tag for factor syntax error is: " << look->toString() << endl;
 		return x;
 	}
 	}
