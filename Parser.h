@@ -117,11 +117,12 @@ void Parser::decls(ifstream& in)
 		Token* t = look; 
 		match(Tag::ID, in);
 		match(';', in);
-		Id* id = new Id((Word*)t, p, used);
-		top->put(t, id);
+		Word* wp = lex->words[t->toString()];
+		Id* id = new Id(wp, p, used);
+		top->put(wp, id);
 		used += p->width;
 	}
-
+	
 }
 
 Stmt* Parser::stmts(ifstream& in)
@@ -367,7 +368,8 @@ Expr* Parser::factor(ifstream& in)
 	{
 		cout << "factor id branch" << endl;
 		string s = look->toString();
-		Id* id = top->get(look);
+		cout << "factor id branch: look's search string: " << s << endl;
+		Id* id = top->get(lex->words[look->toString()]);
 		if (id == NULL);
 		{
 			error(look->toString() + " undeclared");
