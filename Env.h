@@ -6,10 +6,10 @@
 class Env
 {
 private:
-	unordered_map<Token*, Id*> *table;
 protected:
-	Env* prev;
 public:
+	Env* prev;
+	unordered_map<Token*, Id*>* table;
 	Env();
 	Env(Env*);
 	void put(Token*, Id*);
@@ -24,6 +24,15 @@ Env::Env()
 Env::Env(Env* e)
 {
 	table = new unordered_map<Token*, Id*>;
+	if (!e->table->empty())
+	{
+		for (auto it = e->table->begin(); it != e->table->end(); ++it)
+		{
+			put(it->first, it->second);
+		}
+
+	}
+
 	prev = e;
 }
 

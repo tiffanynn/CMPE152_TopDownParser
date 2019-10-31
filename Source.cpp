@@ -33,6 +33,7 @@ string printTree(Node* node)
 	stringstream sb;
 	printTree(node, indent, sb);
 	return sb.str();
+
 }
 
 
@@ -43,9 +44,11 @@ int main()
 
 	
 	ifstream fin;
-	fin.open("test2.txt");
+	fin.open("test.txt");
 	Lexer* l = new Lexer();
 	Parser* p = new Parser(l, fin);
+	Word* wp = l->words[p->look->toString()];
+	Id* id = new Id(wp, Type::Int, Type::Int->width);
 	Prog* tree = p->program(fin);
 	cout << "\nSyntax Tree\n";
 	string treestr = printTree(tree);

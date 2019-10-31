@@ -13,6 +13,6 @@ Instructions on building the parser:
 
 ** For Terminal, download a g++ compiler if not done so using the command on Terminal: sudo apt-get install build-essential
 
-** Then, we compiled our main test file  in the command: gcc+ 
+** Then, we compiled our main test file  in the command: sudo gcc+ Source.cpp
 
 ** Just type "./a.out" and the output will show up on the terminal

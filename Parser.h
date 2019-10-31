@@ -47,10 +47,10 @@ public:
 	Expr* term(ifstream& in);
 	Expr* factor(ifstream& in);
 	Stmt* assign(ifstream& in);
+	bool check_intable(string);
 };
 Parser::Parser()
 {
-	//Type* Type::tester = new Type("int", 275, 4);
 	lex = NULL;
 	look = NULL;
 	top = NULL;
@@ -59,8 +59,17 @@ Parser::Parser()
 Parser::Parser(Lexer* l, ifstream& in)
 {
 	lex = l;
+	top = new Env();
 	move(in);
 	used = 0;
+}
+bool Parser::check_intable(string s)
+{
+	if (lex->words[s] != NULL)
+	{
+		return true;
+	}
+	else return false;
 }
 void Parser::error(string s)
 {
@@ -117,11 +126,12 @@ void Parser::decls(ifstream& in)
 		Token* t = look; 
 		match(Tag::ID, in);
 		match(';', in);
-		Id* id = new Id((Word*)t, p, used);
-		top->put(t, id);
+		Word* wp = lex->words[t->toString()];
+		Id* id = new Id(wp, p, used);
+		top->put(wp, id);
 		used += p->width;
 	}
-
+	
 }
 
 Stmt* Parser::stmts(ifstream& in)
@@ -157,9 +167,11 @@ Stmt* Parser::stmt(ifstream& in)
 	}
 	case 265: //IF tag. Can't use static declaration because it isn't constant.
 	{
+		cout << "in the if case" << endl;
 		match(Tag::IF, in);
 		match('(', in);
 		expr = allexpr(in);
+		cout << "after IF allexpr()" << endl;
 		match(')', in);
 		s1 = stmt(in);
 		if (look->tag != Tag::ELSE)
@@ -260,7 +272,25 @@ Expr* Parser::rel(ifstream& in) //troubling function
 	cout << "after expr" << endl;
 	switch (look->tag)
 	{
-	case '<': case 267: case 263: case '>':
+	case '<':
+	{
+		Token* t = look;
+		move(in);
+		x = new Rel(t, x, expr(in));
+	}
+	case 267:
+	{
+		Token* t = look;
+		move(in);
+		x = new Rel(t, x, expr(in));
+	}
+	case 263:
+	{
+		Token* t = look;
+		move(in);
+		x = new Rel(t, x, expr(in));
+	}
+	case '>':
 	{
 		Token* t = look;
 		move(in);
@@ -320,7 +350,11 @@ Stmt* Parser::assign(ifstream& in)
 	Id* id = top->get(t);
 	if (id == NULL)
 	{
-		error(t->toString() + " undeclared");
+		Word* wp = lex->words[look->toString()];
+		if (top->get(t) == NULL)
+		{
+			error(t->toString() + " undeclared");
+		}
 	}
 	move(in);
 	stmt = new Set(id, allexpr(in));
@@ -337,6 +371,7 @@ Expr* Parser::factor(ifstream& in)
 	case '(':
 	{
 		move(in);
+		cout <<"factor ( branch after move()"<< look->toString() << endl;
 		x = allexpr(in);
 		match(')', in);
 		return x;
@@ -363,23 +398,26 @@ Expr* Parser::factor(ifstream& in)
 		x = Constant::False;
 		return x;
 	}
-	case 264: //ID
-	{
-		cout << "factor id branch" << endl;
-		string s = look->toString();
-		Id* id = top->get(look);
-		if (id == NULL);
-		{
-			error(look->toString() + " undeclared");
-		}
-		move(in);
-		return id;
-	}
+
 	default:
 	{
 		error("factor syntax error: ");
 		cout << "look tag for factor syntax error is: " << look->toString() << endl;
 		return x;
+	}
+	case 264: //ID
+	{
+		cout << "factor id branch" << endl;
+		string s = look->toString();
+		cout << "factor id branch: look's search string: " << s << endl;
+		Word* wp = lex->words[look->toString()];
+		Id* id = top->get(wp);
+		if (id == NULL);
+		{
+			error(look->toString() + " undeclared factor id branch");
+		}
+		move(in);
+		return id;
 	}
 	}
 }
