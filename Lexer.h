@@ -73,7 +73,7 @@ bool Lexer::check_acceptable_words(string s)
 }
 bool Lexer::check_char(char c) //helper function to not have scan() do crazy stuff when peek is looking at a terminal
 {
-	if (c == ' ' || c == '+' || c == '=' || c == '-' || c == '(' ||
+	if (c == ' ' || c == '+' || c == '=' || c == '-' ||
 		c == ')' || c == '\t' || c == '\n' || c == '}' || c== '/' || c == ';'
 		)
 		return true;
@@ -180,7 +180,7 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 	}
 	default:
 		break;
-	}// end case parenthesis
+	}
 	if (isdigit(peek) > 0)
 	{
 		int v = 0;
@@ -213,17 +213,15 @@ Token* Lexer::scan(ifstream& in) // the getnextToken() function. Most of the lex
 	if (isalpha(peek) > 0) //handle alphabetic characters
 	{
 		stringstream s;
-		s << peek;
-		while (isalpha(peek) > 0) //read the next character and check peek
-		{
-			readchar(in);
-			if (check_char(peek)) break; //if peek is looking at a terminal or weird symbol, break out of the loop and don't append it to the string.
+		do {
 			s << peek;
-		}
+			readchar(in);
+		} while (isalpha(peek) > 0);
 		Word* w = words[s.str()]; // This will check if the word is in the reserved keywords like while, do, break, etc
 		if (w != NULL)
 		{
 			last_word = w;
+			peek = ' ';
 			return w;
 		}
 		//if(last_word->lexeme != )

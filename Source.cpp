@@ -44,29 +44,15 @@ int main()
 
 	
 	ifstream fin;
-	fin.open("test2.txt");
+	fin.open("test.txt");
 	Lexer* l = new Lexer();
 	Parser* p = new Parser(l, fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
-	p->move(fin);
 	Word* wp = l->words[p->look->toString()];
 	Id* id = new Id(wp, Type::Int, Type::Int->width);
-	p->top->put(p->look, id);
-	cout << p->look->tag << endl;
-	cout << p->top->get(p->look)<< endl;
-	cout << l->words[l->last_word->toString()] << endl;
-	Env* env = new Env();
-
-	//Prog* tree = p->program(fin);
-	//cout << "\nSyntax Tree\n";
-	//string treestr = printTree(tree);
-	//cout << treestr << endl;
+	Prog* tree = p->program(fin);
+	cout << "\nSyntax Tree\n";
+	string treestr = printTree(tree);
+	cout << treestr << endl;
 	
 
 }
